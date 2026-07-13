@@ -17,6 +17,16 @@ uint8_t mpu6050_init(){
 	return 1;
 }
 
+HAL_StatusTypeDef mpu6050_is_ready(void){
+	return HAL_I2C_IsDeviceReady(&hi2c2, MPU6050_ADDR_8B, 3, 100);
+}
+
+uint8_t mpu6050_read_who_am_i(void){
+	uint8_t dev_addr = 0;
+	mpu6050_read(MPU6050_WHO_AM_I_REG, 1, &dev_addr);
+	return dev_addr;
+}
+
 /**
  * @brief Configure the PWR_MGMT_1 Register
  * @note First reset the device then disable the temperature sensor and select the clock source.

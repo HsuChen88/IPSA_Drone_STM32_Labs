@@ -32,6 +32,7 @@
 
 #include "ultrasonic_sensor.h"
 #include "imu.h"
+#include "mpu6050.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -145,9 +146,16 @@ int main(void)
   HAL_TIM_IC_Start_DMA(&htim5, TIM_CHANNEL_2, us_dma_buffer, 2);
 
   //Initialize IMU
+  HAL_StatusTypeDef imu_status = mpu6050_is_ready();
+  uint8_t imu_who_am_i = mpu6050_read_who_am_i();
+  printf("IMU status: %lu | WHO_AM_I: 0x%02X\r\n", (uint32_t)imu_status, imu_who_am_i);
+
   if(!imu_init()){
 	  while(1){
-		  printf("MPU6050 addr not correct!\n");
+		  // printf("MPU6050 addr not correct!\n");
+      imu_status = mpu6050_is_ready();
+		  imu_who_am_i = mpu6050_read_who_am_i();
+		  printf("MPU6050 init failed | status: %lu | WHO_AM_I: 0x%02X\r\n", (uint32_t)imu_status, imu_who_am_i);
 		  HAL_Delay(1000);
 	  }
   }
@@ -162,8 +170,13 @@ int main(void)
 		  //printf("Dist: %.1f cm\n", us_dist);
 
 		  // printf("Accel scaled: %.2f\t %.2f\t %.2f\t\n", imu_scaled.accel_x, imu_scaled.accel_y, imu_scaled.accel_z);
-		  printf("Gyro scaled: %.2f\t %.2f\t %.2f\t\n", imu_scaled.gyro_x, imu_scaled.gyro_y, imu_scaled.gyro_z);
-		  //printf("Attitude: %.2f\t %.2f\t %.2f\t %.2f\t %.2f\t %.2f\n", drone_att.roll, drone_att.pitch, drone_att.yaw, drone_att.roll_rate, drone_att.pitch_rate, drone_att.yaw_rate);
+		  // printf("Gyro scaled: %.2f\t %.2f\t %.2f\t\n", imu_scaled.gyro_x, imu_scaled.gyro_y, imu_scaled.gyro_z);
+      printf("ACC: %.3f %.3f %.3f g | GYRO: %.3f %.3f %.3f dps\r\n",
+        imu_scaled.accel_x, imu_scaled.accel_y, imu_scaled.accel_z,
+        imu_scaled.gyro_x, imu_scaled.gyro_y, imu_scaled.gyro_z);
+
+      
+      //printf("Attitude: %.2f\t %.2f\t %.2f\t %.2f\t %.2f\t %.2f\n", drone_att.roll, drone_att.pitch, drone_att.yaw, drone_att.roll_rate, drone_att.pitch_rate, drone_att.yaw_rate);
 		  print_loop = 0;
 	  }
 

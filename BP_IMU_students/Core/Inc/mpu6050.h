@@ -26,6 +26,8 @@
 #define MPU6050_GYRO_OFFSET_Z 0
 
 uint8_t mpu6050_init();
+HAL_StatusTypeDef mpu6050_is_ready(void);
+uint8_t mpu6050_read_who_am_i(void);
 void mpu6050_read(uint8_t reg, uint8_t len, uint8_t *buf);
 void mpu6050_write(uint8_t reg, uint8_t len, uint8_t *buf);
 void mpu6050_config();
