@@ -176,9 +176,10 @@ int main(void)
       //   imu_scaled.gyro_x, imu_scaled.gyro_y, imu_scaled.gyro_z
       // );
 
-      printf("ROLL: %.2f \t PITCH: %.2f \t ACC_ROLL: %.2f \t ACC_PITCH: %.2f \t RATE_ROLL: %.2f \t RATE_PITCH: %.2f \r\n",
+      printf("ROLL: %.2f \t PITCH: %.2f \t ACC_ROLL: %.2f \t ACC_PITCH: %.2f \t GYRO_ROLL: %.2f \t GYRO_PITCH: %.2f \t RATE_ROLL: %.2f \t RATE_PITCH: %.2f \r\n",
         drone_att.roll, drone_att.pitch,
         drone_att.acc_roll, drone_att.acc_pitch,
+        drone_att.gyro_roll, drone_att.gyro_pitch,
         drone_att.roll_rate, drone_att.pitch_rate);
       //printf("Attitude: %.2f\t %.2f\t %.2f\t %.2f\t %.2f\t %.2f\n", drone_att.roll, drone_att.pitch, drone_att.yaw, drone_att.roll_rate, drone_att.pitch_rate, drone_att.yaw_rate);
 		  print_loop = 0;

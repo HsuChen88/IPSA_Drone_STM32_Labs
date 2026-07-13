@@ -33,6 +33,8 @@ typedef struct _imu_attitude_t{
 	float yaw;
 	float acc_roll;
 	float acc_pitch;
+	float gyro_roll;
+	float gyro_pitch;
 	float roll_rate;
 	float pitch_rate;
 	float yaw_rate;
