@@ -26,6 +26,7 @@ void imu_update_attitude(imu_attitude_t* attitude, const imu_scaled_data_t imu_s
 	static uint8_t gyro_angle_initialized = 0;
 	static float gyro_roll = 0.0f;
 	static float gyro_pitch = 0.0f;
+	static uint8_t complementary_filter_initialized = 0;
 
 	float body_accel_x = imu_scaled.accel_x;
 	float body_accel_y = imu_scaled.accel_y;
@@ -55,8 +56,15 @@ void imu_update_attitude(imu_attitude_t* attitude, const imu_scaled_data_t imu_s
 	attitude->gyro_pitch = gyro_pitch;
 
 	//TODO: Apply complementary filter
-	attitude->roll = gyro_roll;
-	attitude->pitch = gyro_pitch;
+	if(!complementary_filter_initialized){
+		attitude->roll = roll_acc;
+		attitude->pitch = pitch_acc;
+		complementary_filter_initialized = 1;
+	}
+	else{
+		attitude->roll = (IMU_ALPHA * (attitude->roll + (roll_rate * IMU_SAMPLING_TIME))) + ((1.0f - IMU_ALPHA) * roll_acc);
+		attitude->pitch = (IMU_ALPHA * (attitude->pitch + (pitch_rate * IMU_SAMPLING_TIME))) + ((1.0f - IMU_ALPHA) * pitch_acc);
+	}
 
 	//Rates of rotation obtained from the gyroscope
 	attitude->roll_rate = roll_rate;
