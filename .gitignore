@@ -7,9 +7,6 @@
 **/.agents/
 **/.codex/
 
-# Backups of former nested repositories
-**/.git-monorepo-backup/
-
 # STM32CubeIDE and Eclipse generated/local files
 **/.settings/
 **/Debug/
