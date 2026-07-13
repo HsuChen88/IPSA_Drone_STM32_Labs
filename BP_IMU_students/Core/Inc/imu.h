@@ -5,6 +5,7 @@
 
 #define IMU_SAMPLING_TIME 0.001	//1kHz
 #define IMU_ALPHA 0.9
+#define IMU_RAD_TO_DEG 57.2957795f
 
 #define IMU_FLAG 0x01
 
@@ -30,6 +31,8 @@ typedef struct _imu_attitude_t{
 	float roll;
 	float pitch;
 	float yaw;
+	float acc_roll;
+	float acc_pitch;
 	float roll_rate;
 	float pitch_rate;
 	float yaw_rate;

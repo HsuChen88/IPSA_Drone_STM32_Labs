@@ -171,11 +171,15 @@ int main(void)
 
 		  // printf("Accel scaled: %.2f\t %.2f\t %.2f\t\n", imu_scaled.accel_x, imu_scaled.accel_y, imu_scaled.accel_z);
 		  // printf("Gyro scaled: %.2f\t %.2f\t %.2f\t\n", imu_scaled.gyro_x, imu_scaled.gyro_y, imu_scaled.gyro_z);
-      printf("ACC: %.3f %.3f %.3f g | GYRO: %.3f %.3f %.3f dps\r\n",
-        imu_scaled.accel_x, imu_scaled.accel_y, imu_scaled.accel_z,
-        imu_scaled.gyro_x, imu_scaled.gyro_y, imu_scaled.gyro_z);
+      // printf("ACC: %.3f \t %.3f \t %.3f g \t | \t GYRO: %.3f \t %.3f \t %.3f dps \r\n",
+      //   imu_scaled.accel_x, imu_scaled.accel_y, imu_scaled.accel_z,
+      //   imu_scaled.gyro_x, imu_scaled.gyro_y, imu_scaled.gyro_z
+      // );
 
-      
+      printf("ROLL: %.2f \t PITCH: %.2f \t ACC_ROLL: %.2f \t ACC_PITCH: %.2f \t RATE_ROLL: %.2f \t RATE_PITCH: %.2f \r\n",
+        drone_att.roll, drone_att.pitch,
+        drone_att.acc_roll, drone_att.acc_pitch,
+        drone_att.roll_rate, drone_att.pitch_rate);
       //printf("Attitude: %.2f\t %.2f\t %.2f\t %.2f\t %.2f\t %.2f\n", drone_att.roll, drone_att.pitch, drone_att.yaw, drone_att.roll_rate, drone_att.pitch_rate, drone_att.yaw_rate);
 		  print_loop = 0;
 	  }

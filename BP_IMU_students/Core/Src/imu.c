@@ -23,20 +23,27 @@ void imu_read_scaled_data(imu_scaled_data_t* imu_scaled){
  * @param imu_scaled Struct that stores the current IMU scaled data
  */
 void imu_update_attitude(imu_attitude_t* attitude, const imu_scaled_data_t imu_scaled){
+	float body_accel_x = imu_scaled.accel_x;
+	float body_accel_y = imu_scaled.accel_y;
+	float body_accel_z = imu_scaled.accel_z;
+
 	//TODO: Roll and pitch from scaled accelerometer data in deg/s
-	//float roll_acc = ...;
-	//float pitch_acc = ...;
+	float roll_acc = atan2f(body_accel_y, body_accel_z) * IMU_RAD_TO_DEG;
+	float pitch_acc = -atan2f(body_accel_x, sqrtf((body_accel_y * body_accel_y) + (body_accel_z * body_accel_z))) * IMU_RAD_TO_DEG;
 
 	//TODO: Roll and pitch from scaled gyroscope data
-	//float roll_gyro = ...;
-	//float pitch_gyro = ...;
+	float roll_rate = imu_scaled.gyro_x;
+	float pitch_rate = imu_scaled.gyro_y;
+
+	attitude->acc_roll = roll_acc;
+	attitude->acc_pitch = pitch_acc;
 
 	//TODO: Apply complementary filter
-	//attitude->roll = ...;
-	//attitude->pitch = ...;
+	attitude->roll = roll_acc;
+	attitude->pitch = pitch_acc;
 
 	//Rates of rotation obtained from the gyroscope
-	attitude->roll_rate = imu_scaled.gyro_x;
-	attitude->pitch_rate = imu_scaled.gyro_y;
+	attitude->roll_rate = roll_rate;
+	attitude->pitch_rate = pitch_rate;
 	attitude->yaw_rate = imu_scaled.gyro_z;
 }
