@@ -1,0 +1,38 @@
+# STM32CubeIDE generated/local files
+.settings/
+Debug/
+Release/
+build/
+*.launch
+
+# Embedded build artifacts
+*.o
+*.obj
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+*.list
+*.lst
+*.su
+*.cyclo
+*.gcno
+*.gcda
+*.gcov
+
+# Local agent/tool metadata
+.agents/
+.codex/
+
+# Editor, OS, logs, and temporary files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+Thumbs.db
+Desktop.ini
+*.log
+*.tmp
+*.bak

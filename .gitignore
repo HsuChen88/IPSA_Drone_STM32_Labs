@@ -1,0 +1,57 @@
+# STM32CubeIDE workspace metadata
+.metadata/
+
+# Local agent/tool metadata
+.agents/
+.codex/
+**/.agents/
+**/.codex/
+
+# Backups of former nested repositories
+**/.git-monorepo-backup/
+
+# STM32CubeIDE and Eclipse generated/local files
+**/.settings/
+**/Debug/
+**/Release/
+**/build/
+**/*.launch
+
+# Embedded build artifacts
+**/*.o
+**/*.obj
+**/*.d
+**/*.elf
+**/*.bin
+**/*.hex
+**/*.map
+**/*.list
+**/*.lst
+**/*.su
+**/*.cyclo
+**/*.gcno
+**/*.gcda
+**/*.gcov
+
+# Python generated files and environments
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.venv/
+**/dist/
+**/wheels/
+**/*.egg-info/
+
+# Editor, OS, logs, and temporary files
+.vscode/
+.idea/
+**/*.swp
+**/*.swo
+**/*~
+Thumbs.db
+Desktop.ini
+**/*.log
+**/*.tmp
+**/*.bak

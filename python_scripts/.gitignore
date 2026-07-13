@@ -1,0 +1,21 @@
+# Python generated files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+wheels/
+*.egg-info/
+
+# Virtual environments
+.venv/
+
+# Local configuration and secrets
+.env
+.env.*
+
+# Local agent/tool metadata
+.agents/
+.codex/
