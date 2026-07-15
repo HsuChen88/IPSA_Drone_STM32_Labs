@@ -23,7 +23,7 @@ class USB_COM:
 
 
 if __name__ == "__main__":
-    com_number = input("Enter COM port number (for example, 3 or 1234): ").strip()
+    com_number = input("Enter COM port number (for example, 3 or a number): ").strip()
     usb_com = USB_COM(f"COM{com_number}")
 
     print("Connected")
