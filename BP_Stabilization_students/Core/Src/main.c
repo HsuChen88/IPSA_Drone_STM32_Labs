@@ -185,7 +185,15 @@ int main(void)
 		  //printf("Accel scaled: %.2f\t %.2f\t %.2f\t\n", imu_scaled.accel_x, imu_scaled.accel_y, imu_scaled.accel_z);
 		  //printf("Gyro scaled: %.2f\t %.2f\t %.2f\t\n", imu_scaled.gyro_x, imu_scaled.gyro_y, imu_scaled.gyro_z);
 		  //printf("Attitude: %.2f\t %.2f\t %.2f\t %.2f\t %.2f\t %.2f\n", drone_att.roll, drone_att.pitch, drone_att.yaw, drone_att.roll_rate, drone_att.pitch_rate, drone_att.yaw_rate);
-		  printf("%.2f %.1f %d %d %.2f %.2f %.2f\n", drone_att.roll, us_dist*cosf(drone_att.roll*M_PI/180)*cosf(drone_att.pitch*M_PI/180), (uint16_t)TIM1->CCR1, (uint16_t)TIM1->CCR2, control_inputs.U1, control_inputs.U2, pid_alt.integral);
+		  float roll_deg = drone_att.roll;
+		  float altitude_cm = us_dist * cosf(drone_att.roll * M_PI / 180) * cosf(drone_att.pitch * M_PI / 180); //US measures slant distance; project onto vertical using tilt
+		  uint16_t motor_cw_ccr = (uint16_t)TIM1->CCR1;  //CW motor OneShot125 pulse width, in timer ticks (~us)
+		  uint16_t motor_ccw_ccr = (uint16_t)TIM1->CCR2; //CCW motor OneShot125 pulse width, in timer ticks (~us)
+		  float thrust_cmd_U1 = control_inputs.U1;
+		  float torque_cmd_U2 = control_inputs.U2;
+		  float alt_pid_integral = pid_alt.integral;
+
+		  printf("roll_deg=%.2f \t alt_cm=%.1f \t cw=%d ccw=%d U1=%.2f U2=%.2f alt_pid_integral=%.2f\n", roll_deg, altitude_cm, motor_cw_ccr, motor_ccw_ccr, thrust_cmd_U1, torque_cmd_U2, alt_pid_integral);
 		  print_loop = 0;
 	  }
 
