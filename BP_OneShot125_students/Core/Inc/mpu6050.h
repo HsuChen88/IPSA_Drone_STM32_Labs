@@ -18,12 +18,12 @@
 #define MPU6050_GYRO_LSB 32.8	//32.8 LSB/°/s for FS of +-1000°/s
 #define MPU6050_ACCEL_LSB 4096	//4096 LSB/g for FS of +-8g
 
-#define MPU6050_ACCEL_OFFSET_X 0
-#define MPU6050_ACCEL_OFFSET_Y 0
-#define MPU6050_ACCEL_OFFSET_Z 0
-#define MPU6050_GYRO_OFFSET_X 0
-#define MPU6050_GYRO_OFFSET_Y 0
-#define MPU6050_GYRO_OFFSET_Z 0
+#define MPU6050_ACCEL_OFFSET_X -87
+#define MPU6050_ACCEL_OFFSET_Y -17
+#define MPU6050_ACCEL_OFFSET_Z  4199
+#define MPU6050_GYRO_OFFSET_X  -101
+#define MPU6050_GYRO_OFFSET_Y  -33
+#define MPU6050_GYRO_OFFSET_Z   21
 
 uint8_t mpu6050_init();
 void mpu6050_read(uint8_t reg, uint8_t len, uint8_t *buf);
