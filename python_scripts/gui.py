@@ -2,9 +2,6 @@ import tkinter as tk
 import tkinter.messagebox as msgbox
 from usb_com import USB_COM
 
-USB_ENABLED = False
-
-
 class GUI:
     def __init__(self):
         """ Constructor """
@@ -15,7 +12,7 @@ class GUI:
         self.configure_gains()
         self.configure_des_alt()
         self.configure_buttons()
-        self.usb_com = USB_COM(self, "COM3") if USB_ENABLED else None   #TODO: enter the right COM port for your system
+        self.usb_com = USB_COM(self, "COM3")   #TODO: enter the right COM port for your system
     
 
     def config_master(self):
@@ -151,16 +148,10 @@ class GUI:
         """ Configure the buttons and their callback functions """
         self.frame_buttons = tk.Frame(master=self.app, bg="white")
         self.frame_buttons.place(relx=0.5, rely=0.85, relwidth=0.5, relheight=0.1)
-        tk.Button(master=self.frame_buttons, text="Takeoff", bg="#00508c", font=("Arial", 17), command=lambda : self.send_usb("T\n")).place(relx=0.05, rely=0.05, relwidth=0.2, relheight=0.9)
+        tk.Button(master=self.frame_buttons, text="Takeoff", bg="#00508c", font=("Arial", 17), command=lambda : self.usb_com.send_msg("T\n")).place(relx=0.05, rely=0.05, relwidth=0.2, relheight=0.9)
         tk.Button(master=self.frame_buttons, text="Land", bg="white", font=("Arial", 17), command=self.land).place(relx=0.28, rely=0.05, relwidth=0.2, relheight=0.9)
         tk.Button(master=self.frame_buttons, text="Gains", bg="#de2b07", font=("Arial", 17), command=self.update_gains).place(relx=0.51, rely=0.05, relwidth=0.2, relheight=0.9)
-        tk.Button(master=self.frame_buttons, text="Update z", bg="orange", font=("Arial", 17), command=lambda : self.send_usb(f"Z,{self.zd_var.get()}\n")).place(relx=0.74, rely=0.05, relwidth=0.2, relheight=0.9)
-
-
-    def send_usb(self, msg):
-        """ Send a USB message when USB is enabled. """
-        if self.usb_com is not None:
-            self.usb_com.send_msg(msg)
+        tk.Button(master=self.frame_buttons, text="Update z", bg="orange", font=("Arial", 17), command=lambda : self.usb_com.send_msg(f"Z,{self.zd_var.get()}\n")).place(relx=0.74, rely=0.05, relwidth=0.2, relheight=0.9)
 
 
     def update(self, data):
@@ -180,7 +171,7 @@ class GUI:
         if self.entry_kp_r.get() and self.entry_ki_r.get() and self.entry_kd_r.get() and self.entry_kp_z.get() and self.entry_ki_z.get() and self.entry_kd_z.get():
             try:
                 msg = f"G,{float(self.entry_kp_r.get())},{float(self.entry_ki_r.get())},{float(self.entry_kd_r.get())},{float(self.entry_kp_z.get())},{float(self.entry_ki_z.get())},{float(self.entry_kd_z.get())}\n"
-                self.send_usb(msg)
+                self.usb_com.send_msg(msg)
             except Exception as e:
                 msgbox.showerror("Invalid gains", "Make sure to set float or integers!")
         else:
@@ -190,16 +181,15 @@ class GUI:
     def land(self):
         """ Ask the bicopter to land and update the desired altitude plotted """
         self.zd_var.set(8.0)
-        self.send_usb("L\n")
+        self.usb_com.send_msg("L\n")
 
 
     def quit(self, _):
         """ Stop the motors and close the window """
-        self.send_usb("S\n")
+        self.usb_com.send_msg("S\n")
         res = msgbox.askokcancel("Closing window", "The bicopter will stop its motors. App will close after pressing ok...")
         if res:
-            if self.usb_com is not None:
-                self.usb_com.stop()
+            self.usb_com.stop()
             self.app.quit()
 
 
