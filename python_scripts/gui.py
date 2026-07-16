@@ -20,8 +20,9 @@ class GUI:
         self.app = tk.Tk()
         self.app.title("Bicopter Control Interface")
         self.app.geometry("1400x600")
+        self.app.minsize(1200, 500)
         self.app.config(bg="white")
-        self.app.resizable(False, False)
+        self.app.resizable(True, True)
         self.app.bind("<Escape>", self.quit)
     
 
@@ -62,26 +63,55 @@ class GUI:
         tk.Label(master=self.frame_gains, text="Ki_z", font=("Arial", 20), bg="white", fg="#00508c").place(relx=0.05, rely=0.4, relwidth=0.1, relheight=0.2)
         tk.Label(master=self.frame_gains, text="Kd_z", font=("Arial", 20), bg="white", fg="#00508c").place(relx=0.05, rely=0.75, relwidth=0.1, relheight=0.2)
         self.entry_kp_z = tk.Entry(master=self.frame_gains, font=("Arial", 20))
-        self.entry_kp_z.insert(tk.END, "0.0")
+        self.entry_kp_z.insert(tk.END, "0.000")
         self.entry_kp_z.place(relx=0.2, rely=0.05, relwidth=0.25, relheight=0.2)
         self.entry_ki_z = tk.Entry(master=self.frame_gains, font=("Arial", 20))
-        self.entry_ki_z.insert(tk.END, "0.0")
+        self.entry_ki_z.insert(tk.END, "0.000")
         self.entry_ki_z.place(relx=0.2, rely=0.4, relwidth=0.25, relheight=0.2)
         self.entry_kd_z = tk.Entry(master=self.frame_gains, font=("Arial", 20))
-        self.entry_kd_z.insert(tk.END, "0.0")
+        self.entry_kd_z.insert(tk.END, "0.000")
         self.entry_kd_z.place(relx=0.2, rely=0.75, relwidth=0.25, relheight=0.2)
         tk.Label(master=self.frame_gains, text="Kp_r", font=("Arial", 20), bg="white", fg="#de2b07").place(relx=0.55, rely=0.05, relwidth=0.1, relheight=0.2)
         tk.Label(master=self.frame_gains, text="Ki_r", font=("Arial", 20), bg="white", fg="#de2b07").place(relx=0.55, rely=0.4, relwidth=0.1, relheight=0.2)
         tk.Label(master=self.frame_gains, text="Kd_r", font=("Arial", 20), bg="white", fg="#de2b07").place(relx=0.55, rely=0.75, relwidth=0.1, relheight=0.2)
         self.entry_kp_r = tk.Entry(master=self.frame_gains, font=("Arial", 20))
-        self.entry_kp_r.insert(tk.END, "0.0")
+        self.entry_kp_r.insert(tk.END, "0.000")
         self.entry_kp_r.place(relx=0.7, rely=0.05, relwidth=0.25, relheight=0.2)
         self.entry_ki_r = tk.Entry(master=self.frame_gains, font=("Arial", 20))
-        self.entry_ki_r.insert(tk.END, "0.0")
+        self.entry_ki_r.insert(tk.END, "0.000")
         self.entry_ki_r.place(relx=0.7, rely=0.4, relwidth=0.25, relheight=0.2)
         self.entry_kd_r = tk.Entry(master=self.frame_gains, font=("Arial", 20))
-        self.entry_kd_r.insert(tk.END, "0.0")
+        self.entry_kd_r.insert(tk.END, "0.000")
         self.entry_kd_r.place(relx=0.7, rely=0.75, relwidth=0.25, relheight=0.2)
+        self.bind_gain_entries()
+
+
+    def bind_gain_entries(self):
+        """ Bind keyboard adjustments for PID gain entries. """
+        gain_entries = (
+            self.entry_kp_z,
+            self.entry_ki_z,
+            self.entry_kd_z,
+            self.entry_kp_r,
+            self.entry_ki_r,
+            self.entry_kd_r,
+        )
+        for entry in gain_entries:
+            entry.bind("<Up>", lambda event, e=entry: self.adjust_gain(e, 0.001))
+            entry.bind("<Down>", lambda event, e=entry: self.adjust_gain(e, -0.001))
+
+
+    def adjust_gain(self, entry, step):
+        """ Adjust the selected gain entry by step and keep three decimals. """
+        try:
+            value = float(entry.get())
+        except ValueError:
+            value = 0.0
+
+        entry.delete(0, tk.END)
+        entry.insert(0, f"{value + step:.3f}")
+        entry.icursor(tk.END)
+        return "break"
     
 
     def configure_des_alt(self):
