@@ -23,7 +23,7 @@ class GUI:
         self.app = tk.Tk()
         self.app.title("Bicopter Control Interface")
         self.app.geometry("1400x600")
-        self.app.minsize(1200, 500)
+        self.app.minsize(1400, 700)
         self.app.config(bg="white")
         self.app.resizable(True, True)
         self.app.bind("<Escape>", self.quit)
@@ -125,6 +125,26 @@ class GUI:
         self.scale_zd = tk.Scale(self.frame_des_alt, bg="white", orient="horizontal", from_=8.0, to=20.0, resolution=1,
                                  label="Target altitude in cm", tickinterval=2, troughcolor="white", font=("Arial", 20), variable=self.zd_var)
         self.scale_zd.place(relx=0.05, rely=0.05, relwidth=0.9, relheight=0.9)
+        self.scale_zd.bind("<Button-1>", self.set_altitude_from_click)
+        self.scale_zd.bind("<B1-Motion>", self.set_altitude_from_click)
+
+
+    def set_altitude_from_click(self, event):
+        """ Set target altitude directly from the clicked scale position. """
+        from_value = float(self.scale_zd.cget("from"))
+        to_value = float(self.scale_zd.cget("to"))
+        resolution = float(self.scale_zd.cget("resolution"))
+        start_x = self.scale_zd.coords(from_value)[0]
+        end_x = self.scale_zd.coords(to_value)[0]
+
+        ratio = (event.x - start_x) / (end_x - start_x)
+        ratio = max(0.0, min(1.0, ratio))
+        value = from_value + ratio * (to_value - from_value)
+        if resolution > 0:
+            value = round(value / resolution) * resolution
+
+        self.zd_var.set(value)
+        return "break"
 
     
     def configure_buttons(self):
